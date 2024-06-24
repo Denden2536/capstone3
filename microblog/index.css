@@ -1,0 +1,36 @@
+/* index.css */
+
+body {
+  background-image: url("naruto.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  min-height: 100vh;
+}
+
+main {
+  display: flex;
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  flex: 1;
+}
+
+.container-overlay {
+  max-width: 600px; /* Example: limit container width */
+  background-color: rgba(0, 0, 0, 0.5); /* Adjust the opacity as needed */
+  padding: 20px;
+  border-radius: 10px; /* Optional: add some border-radius for aesthetics */
+  text-align: center; /* Center text inside container */
+}
+
+.container-overlay h1,
+.container-overlay p {
+  color: white;
+}
+
