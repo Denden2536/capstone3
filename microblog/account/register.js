@@ -1,22 +1,43 @@
 "use strict";
 
 const registerForm = document.querySelector("#register");
+const apiBaseURL1 = "http://microbloglite.us-east-2.elasticbeanstalk.com";
 
 registerForm.onsubmit = function (event) {
-    // Prevent the form from refreshing the page,
-    // as it will do by default when the Submit event is triggered:
-    event.preventDefault();
+  event.preventDefault();
 
-    // We can use loginForm.username (for example) to access
-    // the input element in the form which has the ID of "username".
-    const registerData = {
-        username: registerForm.username.value,
-        password: registerForm.password.value,
-    }
+  const fullName = registerForm.fullName.value;
+  const username = registerForm.username.value;
+  const password = registerForm.password.value;
+  const passwordRepeat = registerForm.passwordRepeat.value;
 
-    // Disables the button after the form has been submitted already:
-    registerForm.registerbutton.disabled = true;
+  if (password !== passwordRepeat) {
+    alert("Passwords do not match!");
+    return;
+  }
 
-    // Time to actually process the login using the function from auth.js!
-    register(registerData);
+  const registerData = {
+    fullName: fullName,
+    username: username,
+    password: password,
+  };
+
+  registerForm.registerButton.disabled = true;
+
+  fetch(`${apiBaseURL1}/api/users`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(registerData),
+  })
+    .then((response) => response.json())
+    .then((user) => {
+      alert("Congratulations! Your account has been created.");
+      window.location.assign("../posts/posts.html"); // Redirect to posts page
+    })
+    .catch((error) => {
+      alert("Error: " + error.message);
+      registerForm.registerButton.disabled = false;
+    });
 };

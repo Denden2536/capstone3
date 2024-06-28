@@ -3,6 +3,7 @@
 "use strict";
 
 const apiBaseURL = "http://microbloglite.us-east-2.elasticbeanstalk.com";
+
 // Backup server:   https://microbloglite.onrender.com
 
 // You can use this function to get the login data of the logged-in
@@ -24,15 +25,11 @@ function isLoggedIn() {
 // landing page, in order to process a user's login. READ this code,
 // and feel free to re-use parts of it for other `fetch()` requests
 // you may need to write.
-
 function login(loginData) {
   // POST /auth/login
   const options = {
     method: "POST",
     headers: {
-      // This header specifies the type of content we're sending.
-      // This is required for endpoints expecting us to send
-      // JSON data.
       "Content-Type": "application/json",
     },
     body: JSON.stringify(loginData),
@@ -43,7 +40,6 @@ function login(loginData) {
     .then((loginData) => {
       window.localStorage.setItem("login-data", JSON.stringify(loginData));
       window.location.assign("../posts/posts.html"); // redirect
-
       return loginData;
     });
 }
@@ -53,19 +49,16 @@ function register(registerData) {
   const options = {
     method: "POST",
     headers: {
-      // This header specifies the type of content we're sending.
-      // This is required for endpoints expecting us to send
-      // JSON data.
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(loginData),
+    body: JSON.stringify(registerData),
   };
 
   return fetch(apiBaseURL + "/api/users", options)
     .then((response) => response.json())
     .then((user) => {
-      window.location.assign("./login.html"); // redirect
-
+      alert("Congratulations! Your account has been created.");
+      window.location.assign("../posts/posts.html"); // redirect to posts page
     });
 }
 
@@ -80,10 +73,6 @@ function logout() {
   const options = {
     method: "GET",
     headers: {
-      // This header is how we authenticate our user with the
-      // server for any API requests which require the user
-      // to be logged-in in order to have access.
-      // In the API docs, these endpoints display a lock icon.
       Authorization: `Bearer ${loginData.token}`,
     },
   };
@@ -92,11 +81,7 @@ function logout() {
     .then((response) => response.json())
     .then((data) => console.log(data))
     .finally(() => {
-      // We're using `finally()` so that we will continue with the
-      // browser side of logging out (below) even if there is an
-      // error with the fetch request above.
-
       window.localStorage.removeItem("login-data"); // remove login data from LocalStorage
-      window.location.assign("/"); // redirect back to landing page
+      window.location.assign("../index.html"); // redirect back to landing page
     });
 }
